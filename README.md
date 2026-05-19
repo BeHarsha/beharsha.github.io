@@ -201,7 +201,7 @@ harsha.fieldmaster@gmail.com
 
 # ⭐ Support
 
-If you like this portfolio repository, consider giving it a ⭐ on GitHub!
+If you like this portfolio repository, consider giving it a ⭐ on GitHub
 
 
 # License
@@ -210,5 +210,5 @@ This project is licensed under the MIT License.
 
 
 <p align="center">
-  Built with ❤️ by Deva Harsha Bethineedi
+  Built with ❤️ by Bethineedi Deva Harsha
 </p>
