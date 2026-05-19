@@ -2,8 +2,6 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Portfolio-Live-success?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Python-Analytics-blue?style=for-the-badge">
-  <img src="https://img.shields.io/badge/SQL-Database-orange?style=for-the-badge">
   <img src="https://img.shields.io/badge/GitHub%20Pages-Deployed-black?style=for-the-badge">
 </p>
 
