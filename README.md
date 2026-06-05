@@ -158,19 +158,19 @@ GPA: 7.05/10
 ![Home](Home.png)
 
 ## About
-![About](assets/About.png)
+![About](About.png)
 
 ## Skills
-![Skills](assets/Skills.png)
+![Skills](Skills.png)
 
 ## Projects
-![Projects](assets/Projects.png)
+![Projects](Projects.png)
 
 ## Credentials
-![Credentials](assets/Credentials.png)
+![Credentials](Credentials.png)
 
 ## Achievements
-![Achievements](assets/Achievements.png)
+![Achievements](Achievements.png)
 
 
 # Run Locally
