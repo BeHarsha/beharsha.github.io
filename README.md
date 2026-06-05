@@ -1,1128 +1,220 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Deva Harsha — Data Analyst</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-
-    /* ── RESET ───────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    img, svg { display: block; }
-    a { text-decoration: none; }
-    ul { list-style: none; }
-
-    /* ── TOKENS ──────────────────────────────── */
-    :root {
-      --bg:      #0d0d0d;
-      --card:    #181818;
-      --hover:   #1d1d1d;
-      --border:  #242424;
-      --accent:  #c8f135;
-      --teal:    #5be0c8;
-      --text:    #f0ede8;
-      --sub:     #aaa;
-      --muted:   #666;
-
-      /* spacing — every value is 8 × n */
-      --s1: 0.5rem;   /* 8  */
-      --s2: 1rem;     /* 16 */
-      --s3: 1.5rem;   /* 24 */
-      --s4: 2rem;     /* 32 */
-      --s5: 2.5rem;   /* 40 */
-      --s6: 3rem;     /* 48 */
-      --s8: 4rem;     /* 64 */
-      --s12: 6rem;    /* 96 */
-
-      /* type */
-      --f-xs:   0.72rem;
-      --f-sm:   0.82rem;
-      --f-base: 0.95rem;
-      --f-md:   1.05rem;
-
-      --r: 2px;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-base);
-      font-weight: 400;
-      line-height: 1.65;
-      overflow-x: hidden;
-    }
-
-    /* noise grain */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.025;
-    }
-
-    /* scrollbar */
-    ::-webkit-scrollbar { width: 3px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
-
-    /* ── TYPOGRAPHY ──────────────────────────── */
-
-    /* All headings: Syne */
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(3rem, 5.5vw, 5.8rem);
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      color: var(--text);
-    }
-
-    h2 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(2rem, 3.5vw, 3.2rem);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      margin-bottom: var(--s6);
-    }
-
-    h3 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-      color: var(--text);
-      margin-bottom: var(--s2);
-    }
-
-    /* All body text: DM Sans — no global <p> override; style per context */
-    .body-text {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      font-size: var(--f-md);
-      line-height: 1.85;
-      color: var(--sub);
-    }
-    .body-text + .body-text { margin-top: var(--s3); }
-    .body-text strong { font-weight: 500; color: var(--text); }
-
-    /* Section eyebrow */
-    .eyebrow {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      margin-bottom: var(--s2);
-    }
-    .eyebrow::before {
-      content: '';
-      display: block;
-      width: 20px; height: 2px;
-      background: var(--accent);
-      flex-shrink: 0;
-    }
-
-    /* Column sub-heading (non-h tag) */
-    .col-head {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: block;
-      margin-bottom: var(--s3);
-    }
-
-    /* skill category label */
-    .skill-cat {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--teal);
-      display: block;
-      margin-bottom: var(--s1);
-    }
-
-    /* tag pill */
-    .tag {
-      display: inline-block;
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 0.28rem 0.7rem;
-      border-radius: 1px;
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    /* metric badge */
-    .metric {
-      display: inline-block;
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      color: var(--accent);
-      background: rgba(200,241,53,0.07);
-      border: 1px solid rgba(200,241,53,0.22);
-      padding: 0.3rem 0.75rem;
-      border-radius: var(--r);
-    }
-
-    /* fade-in */
-    .fade {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .fade.in { opacity: 1; transform: none; }
-
-    /* ── NAV ─────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: var(--s2) var(--s6);
-      background: rgba(13,13,13,0.9);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.05rem;
-      letter-spacing: -0.02em;
-      color: var(--accent);
-    }
-
-    .nav-links {
-      display: flex; align-items: center; gap: var(--s5);
-    }
-
-    .nav-links li a {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      transition: color 0.2s;
-      cursor: pointer;
-    }
-    .nav-links li a:hover { color: var(--text); }
-
-    /* Hire Me button — explicit override */
-    .nav-hire {
-      display: inline-block;
-      font-family: 'Syne', sans-serif !important;
-      font-size: var(--f-xs) !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.06em !important;
-      text-transform: uppercase;
-      color: #0d0d0d !important;
-      background: var(--accent);
-      padding: 0.44rem 1.2rem;
-      border-radius: var(--r);
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .nav-hire:hover { background: #d8ff45 !important; color: #0d0d0d !important; }
-
-    /* ── BUTTONS ─────────────────────────────── */
-    .btn {
-      display: inline-block;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: var(--f-sm);
-      letter-spacing: 0.05em;
-      padding: 0.88rem 2rem;
-      border-radius: var(--r);
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.18s;
-    }
-
-    .btn-solid {
-      background: var(--accent);
-      color: #0d0d0d;
-      border: 1px solid var(--accent);
-    }
-    .btn-solid:hover { background: #d8ff45; border-color: #d8ff45; transform: translateY(-2px); }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ── SECTION BASE ────────────────────────── */
-    .section {
-      padding: var(--s12) var(--s6);
-      border-top: 1px solid var(--border);
-      position: relative;
-    }
-
-    /* ── HERO ────────────────────────────────── */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: var(--s8);
-      padding: var(--s6);
-      padding-top: calc(72px + var(--s8));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-avail {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      margin-bottom: var(--s3);
-    }
-    .hero-avail::before {
-      content: ''; display: block;
-      width: 28px; height: 2px; background: var(--accent);
-    }
-
-    h1 .dim { color: var(--muted); }
-
-    .hero-desc {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-md);
-      font-weight: 300;
-      line-height: 1.85;
-      color: var(--sub);
-      max-width: 420px;
-      margin-top: var(--s4);
-      margin-bottom: var(--s5);
-    }
-
-    .hero-btns {
-      display: flex; gap: var(--s2); flex-wrap: wrap;
-    }
-
-    /* Stats */
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .stat {
-      background: var(--card);
-      padding: var(--s4) var(--s3);
-      transition: background 0.2s;
-    }
-    .stat:hover { background: var(--hover); }
-
-    .stat-n {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 2.2rem;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-    }
-    .stat-l {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* scroll hint */
-    .scroll-hint {
-      position: absolute;
-      bottom: var(--s4); left: 50%;
-      transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: var(--s1);
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .scroll-line {
-      width: 1px; height: 44px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-      animation: pulse 1.8s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
-
-    /* ── ABOUT ───────────────────────────────── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--s12);
-      align-items: start;
-    }
-
-    .contact-list {
-      display: flex; flex-direction: column;
-      gap: var(--s2);
-    }
-
-    .contact-row {
-      display: flex; align-items: center; gap: var(--s2);
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-base);
-      font-weight: 400;
-      color: var(--sub);
-      transition: color 0.2s;
-      cursor: pointer;
-    }
-    a.contact-row:hover { color: var(--accent); }
-    a.contact-row:hover .c-icon { border-color: var(--accent); color: var(--accent); }
-
-    .c-icon {
-      width: 36px; height: 36px; flex-shrink: 0;
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.82rem;
-      color: var(--muted);
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    /* ── SKILLS ──────────────────────────────── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .skill-block {
-      background: var(--card);
-      padding: var(--s4);
-      transition: background 0.2s;
-    }
-    .skill-block:hover { background: var(--hover); }
-    .skill-block:hover .tag { border-color: #303030; color: #999; }
-
-    .tags {
-      display: flex; flex-wrap: wrap; gap: 0.45rem;
-      margin-top: var(--s2);
-    }
-
-    /* ── PROJECTS ────────────────────────────── */
-    .proj-count {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: block;
-      margin-top: calc(-1 * var(--s4));
-      margin-bottom: var(--s6);
-    }
-
-    .project-list {
-      display: flex; flex-direction: column;
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .project-card {
-      background: var(--card);
-      padding: var(--s6);
-      display: grid;
-      grid-template-columns: 3rem 1fr 2rem;
-      gap: var(--s4);
-      align-items: start;
-      color: inherit;
-      transition: background 0.2s;
-    }
-    .project-card:hover { background: var(--hover); }
-
-    .proj-num {
-      font-family: 'Syne', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      padding-top: 0.3rem;
-    }
-
-    .proj-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1.25rem;
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-      color: var(--text);
-      margin-bottom: var(--s2);
-      transition: color 0.2s;
-    }
-    .project-card:hover .proj-title { color: var(--accent); }
-
-    .proj-desc {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-base);
-      font-weight: 300;
-      line-height: 1.85;
-      color: var(--sub);
-      max-width: 700px;
-      margin-bottom: var(--s3);
-    }
-
-    .proj-metrics {
-      display: flex; flex-wrap: wrap; gap: 0.5rem;
-      margin-bottom: var(--s3);
-    }
-
-    .proj-tools {
-      display: flex; flex-wrap: wrap; gap: 0.4rem;
-    }
-
-    .tool {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 0.24rem 0.6rem;
-      border-radius: 1px;
-    }
-
-    .proj-arrow {
-      font-size: 1.3rem;
-      color: var(--muted);
-      padding-top: 0.2rem;
-      transition: color 0.2s, transform 0.2s;
-    }
-    .project-card:hover .proj-arrow { color: var(--accent); transform: translate(3px,-3px); }
-
-    /* ── EDUCATION & CERTS ───────────────────── */
-    .edu-certs-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--s12);
-      align-items: start;
-    }
-
-    .edu-item {
-      padding: var(--s3) 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .edu-item:first-of-type { border-top: 1px solid var(--border); }
-
-    .edu-degree {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--text);
-      margin-bottom: 0.3rem;
-    }
-    .edu-school {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-sm);
-      font-weight: 300;
-      color: var(--muted);
-      margin-bottom: 0.45rem;
-    }
-    .edu-meta {
-      display: flex; gap: var(--s3); flex-wrap: wrap;
-    }
-    .edu-year {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      color: var(--accent);
-    }
-    .edu-gpa {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      color: var(--muted);
-    }
-
-    .cert-item {
-      padding: var(--s3) 0;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: flex-start; gap: var(--s2);
-    }
-    .cert-item:first-of-type { border-top: 1px solid var(--border); }
-
-    .cert-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--teal);
-      flex-shrink: 0; margin-top: 0.45rem;
-    }
-
-    .cert-name {
-      font-family: 'Syne', sans-serif;
-      font-size: var(--f-base);
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.25rem;
-    }
-    .cert-issuer {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-sm);
-      font-weight: 300;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-    }
-    .cert-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      color: var(--teal);
-    }
-    .cert-link:hover { text-decoration: underline; }
-
-    /* ── ACHIEVEMENTS ────────────────────────── */
-    .achieve-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .achieve-card {
-      background: var(--card);
-      padding: var(--s4);
-      transition: background 0.2s;
-      display: flex;
-      flex-direction: column;
-      gap: var(--s2);
-    }
-    .achieve-card:hover { background: var(--hover); }
-
-    .achieve-badge {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      display: block;
-      margin-bottom: var(--s1);
-    }
-
-    .achieve-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--text);
-      margin-bottom: 0.2rem;
-    }
-
-    .achieve-issuer {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-sm);
-      font-weight: 300;
-      color: var(--muted);
-    }
-
-    .achieve-links {
-      display: flex;
-      gap: var(--s3);
-      flex-wrap: wrap;
-      margin-top: var(--s1);
-    }
-
-    .achieve-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      color: var(--teal);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .achieve-link:hover { text-decoration: underline; }
-
-    .achieve-link.badge-link {
-      color: var(--accent);
-    }
-
-    /* ── FOOTER ──────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: var(--s6);
-      display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap;
-      gap: var(--s3);
-    }
-
-    .foot-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.05rem;
-      color: var(--accent);
-    }
-
-    .foot-links {
-      display: flex; gap: var(--s5);
-    }
-    .foot-links a {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-sm);
-      font-weight: 400;
-      color: var(--muted);
-      transition: color 0.2s;
-    }
-    .foot-links a:hover { color: var(--accent); }
-
-    .foot-copy {
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--f-xs);
-      color: var(--muted);
-    }
-
-    /* ── RESPONSIVE ──────────────────────────── */
-    @media (max-width: 900px) {
-      nav { padding: var(--s2) var(--s3); }
-      .nav-links { display: none; }
-
-      .hero {
-        grid-template-columns: 1fr;
-        padding: var(--s3);
-        padding-top: calc(68px + var(--s5));
-        gap: var(--s6);
-      }
-
-      .section { padding: var(--s8) var(--s3); }
-
-      .about-grid,
-      .edu-certs-grid { grid-template-columns: 1fr; gap: var(--s8); }
-
-      .skills-grid { grid-template-columns: 1fr 1fr; }
-
-      .project-card { grid-template-columns: 1fr; }
-      .proj-num, .proj-arrow { display: none; }
-
-      footer { flex-direction: column; text-align: center; }
-    }
-
-    @media (max-width: 540px) {
-      .skills-grid { grid-template-columns: 1fr; }
-    }
-
-  </style>
-</head>
-<body>
-
-  <!-- ████ NAV ████ -->
-  <nav>
-    <div class="nav-logo">DH.</div>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#achievements">Achievements</a></li>
-      <li><a href="mailto:harsha.fieldmaster@gmail.com" class="nav-hire">Hire Me</a></li>
-    </ul>
-  </nav>
-
-  <!-- ████ HERO ████ -->
-  <div class="hero">
-
-    <div class="fade">
-      <span class="hero-avail">Available for opportunities</span>
-      <h1><span class="dim">Data</span><br>Analyst</h1>
-      <p class="hero-desc">
-        Data Analyst skilled in SQL, Python, Power BI, Tableau, Excel and statistical analysis.
-        I build analytical solutions for banking and retail data — transforming complex datasets
-        into decision-ready insights through dashboards, EDA, and business intelligence.
-      </p>
-      <div class="hero-btns">
-        <a href="#projects" class="btn btn-solid">View Projects</a>
-        <a href="mailto:harsha.fieldmaster@gmail.com" class="btn btn-ghost">Get in Touch</a>
-      </div>
-    </div>
-
-    <div class="fade" style="transition-delay:0.12s">
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-n">2</div>
-          <div class="stat-l">Live Projects</div>
-        </div>
-        <div class="stat">
-          <div class="stat-n">698M</div>
-          <div class="stat-l">$ Data Analysed</div>
-        </div>
-        <div class="stat">
-          <div class="stat-n">4</div>
-          <div class="stat-l">Certifications</div>
-        </div>
-        <div class="stat">
-          <div class="stat-n">8.0</div>
-          <div class="stat-l">MCA GPA / 10</div>
-        </div>
-      </div>
-    </div>
-
-    <a class="scroll-hint" href="#about">
-      <div class="scroll-line"></div>
-      Scroll
-    </a>
-
-  </div>
-
-  <!-- ████ ABOUT ████ -->
-  <section id="about" class="section">
-    <span class="eyebrow">About Me</span>
-
-    <div class="about-grid">
-
-      <div class="fade">
-        <h2>Data-driven,<br>impact-focused.</h2>
-        <p class="body-text">
-          I'm <strong>Bethineedi Deva Harsha</strong>, a Data Analyst based in Hyderabad,
-          currently pursuing my MCA at RG Kedia College of Commerce. I specialise in
-          dashboard development and transforming complex datasets into actionable business
-          insights through descriptive and inferential statistics, data visualisation, and BI.
-        </p>
-        <p class="body-text">
-          My project experience spans <strong>banking analytics</strong> — analysing
-          $698M+ loan portfolios — and <strong>retail intelligence</strong>, processing
-          thousands of customer behaviour records. I have a strong ability to translate
-          business requirements into clear reports and decision-ready insights.
-        </p>
-        <p class="body-text">
-          I'm open to <strong>full-time roles, internships</strong> and collaborative
-          projects where data can move the needle.
-        </p>
-      </div>
-
-      <div class="fade" style="transition-delay:0.1s">
-        <div class="contact-list">
-          <a href="mailto:harsha.fieldmaster@gmail.com" class="contact-row">
-            <div class="c-icon">✉</div>
-            harsha.fieldmaster@gmail.com
-          </a>
-          <a href="tel:+917995890631" class="contact-row">
-            <div class="c-icon">☎</div>
-            +91 79958 90631
-          </a>
-          <a href="https://beharsha.github.io" target="_blank" rel="noopener" class="contact-row">
-            <div class="c-icon">⬡</div>
-            beharsha.github.io
-          </a>
-          <a href="https://www.linkedin.com/in/bethineedi-deva-harsha-3933aa2a9" target="_blank" rel="noopener" class="contact-row">
-            <div class="c-icon">in</div>
-            LinkedIn Profile
-          </a>
-          <a href="https://github.com/BeHarsha" target="_blank" rel="noopener" class="contact-row">
-            <div class="c-icon">⌥</div>
-            github.com/BeHarsha
-          </a>
-          <span class="contact-row">
-            <div class="c-icon">⊙</div>
-            Hyderabad · Open to Relocate
-          </span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ████ SKILLS ████ -->
-  <section id="skills" class="section">
-    <span class="eyebrow">Technical Skills</span>
-    <h2>Tools of the<br>trade.</h2>
-
-    <div class="skills-grid fade">
-
-      <div class="skill-block">
-        <span class="skill-cat">Querying</span>
-        <h3>SQL</h3>
-        <div class="tags">
-          <span class="tag">CTEs</span>
-          <span class="tag">Window Functions</span>
-          <span class="tag">Subqueries</span>
-          <span class="tag">Joins</span>
-          <span class="tag">MySQL</span>
-          <span class="tag">PostgreSQL</span>
-        </div>
-      </div>
-
-      <div class="skill-block">
-        <span class="skill-cat">Programming</span>
-        <h3>Python</h3>
-        <div class="tags">
-          <span class="tag">Pandas</span>
-          <span class="tag">NumPy</span>
-          <span class="tag">Matplotlib</span>
-          <span class="tag">Seaborn</span>
-        </div>
-      </div>
-
-      <div class="skill-block">
-        <span class="skill-cat">Visualization &amp; BI</span>
-        <h3>Dashboards</h3>
-        <div class="tags">
-          <span class="tag">Power BI</span>
-          <span class="tag">DAX</span>
-          <span class="tag">Tableau</span>
-          <span class="tag">KPI Reporting</span>
-        </div>
-      </div>
-
-      <div class="skill-block">
-        <span class="skill-cat">Mathematics</span>
-        <h3>Statistics</h3>
-        <div class="tags">
-          <span class="tag">Hypothesis Testing</span>
-          <span class="tag">Regression Analysis</span>
-          <span class="tag">Correlation</span>
-          <span class="tag">Probability</span>
-          <span class="tag">EDA</span>
-          <span class="tag">Inferential Stats</span>
-        </div>
-      </div>
-
-      <div class="skill-block">
-        <span class="skill-cat">Spreadsheets</span>
-        <h3>Microsoft Excel</h3>
-        <div class="tags">
-          <span class="tag">Pivot Tables</span>
-          <span class="tag">Pivot Charts</span>
-          <span class="tag">VLOOKUP</span>
-          <span class="tag">XLOOKUP</span>
-          <span class="tag">Index Match</span>
-          <span class="tag">Conditional Formatting</span>
-          <span class="tag">Data Validation</span>
-        </div>
-      </div>
-
-      <div class="skill-block">
-        <span class="skill-cat">Workflow &amp; Process</span>
-        <h3>Tools &amp; Concepts</h3>
-        <div class="tags">
-          <span class="tag">Jupyter Notebook</span>
-          <span class="tag">VS Code</span>
-          <span class="tag">GitHub</span>
-          <span class="tag">Agile</span>
-          <span class="tag">Data Cleaning</span>
-          <span class="tag">SDLC</span>
-        </div>
-      </div>
-
-      <div class="skill-block">
-        <span class="skill-cat">Interpersonal</span>
-        <h3>Soft Skills</h3>
-        <div class="tags">
-          <span class="tag">Analytical Thinking</span>
-          <span class="tag">Problem-Solving</span>
-          <span class="tag">Data Storytelling</span>
-          <span class="tag">Team Collaboration</span>
-          <span class="tag">Business Communication</span>
-          <span class="tag">Stakeholder Alignment</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ████ PROJECTS ████ -->
-  <section id="projects" class="section">
-    <span class="eyebrow">Projects</span>
-    <h2>Work that<br>speaks numbers.</h2>
-    <span class="proj-count">2 projects</span>
-
-    <div class="project-list fade">
-
-      <a href="https://github.com/BeHarsha/Banking_Insights_and_Decision_Support_System" target="_blank" rel="noopener" class="project-card">
-        <div class="proj-num">01</div>
-        <div>
-          <div class="proj-title">Banking Insights &amp; Decision Support System</div>
-          <p class="proj-desc">
-            A financial institution needed a centralised analytics solution to monitor
-            loan performance, identify risky lending patterns, and improve visibility
-            into customer borrowing behaviour across multiple loan categories.
-          </p>
-          <div class="proj-metrics">
-            <span class="metric">2,940 loan applications</span>
-            <span class="metric">$698.73M funded volume</span>
-            <span class="metric">13.8% bad loan ratio</span>
-            <span class="metric">$64.9M NPA identified</span>
-            <span class="metric">6.9% MoM volume surge detected</span>
-          </div>
-          <div class="proj-tools">
-            <span class="tool">SQL</span>
-            <span class="tool">Python</span>
-            <span class="tool">Power BI</span>
-            <span class="tool">Data Modelling</span>
-          </div>
-        </div>
-        <div class="proj-arrow">↗</div>
-      </a>
-
-      <a href="https://github.com/BeHarsha/Retail_Customer_Shopping_Analysis" target="_blank" rel="noopener" class="project-card">
-        <div class="proj-num">02</div>
-        <div>
-          <div class="proj-title">Retail Customer Shopping Analysis</div>
-          <p class="proj-desc">
-            A retail business required deep customer behaviour analysis to identify
-            purchasing trends, high-performing product categories, and regional sales
-            opportunities for strategic business optimisation.
-          </p>
-          <div class="proj-metrics">
-            <span class="metric">3,900 records processed</span>
-            <span class="metric">14 behavioural variables</span>
-            <span class="metric">$59.76 avg transaction value</span>
-            <span class="metric">Clothing — #1 revenue driver (1,700+ units)</span>
-          </div>
-          <div class="proj-tools">
-            <span class="tool">SQL</span>
-            <span class="tool">Power BI</span>
-            <span class="tool">DAX</span>
-            <span class="tool">Python</span>
-          </div>
-        </div>
-        <div class="proj-arrow">↗</div>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ████ EDUCATION & CERTIFICATIONS ████ -->
-  <section id="education" class="section">
-    <span class="eyebrow">Credentials</span>
-    <h2>Education &amp;<br>Certifications.</h2>
-
-    <div class="edu-certs-grid fade">
-
-      <div>
-        <span class="col-head">Academic Background</span>
-
-        <div class="edu-item">
-          <div class="edu-degree">Master of Computer Applications</div>
-          <div class="edu-school">RG Kedia College of Commerce, Hyderabad</div>
-          <div class="edu-meta">
-            <span class="edu-year">Oct 2024 – Jul 2026</span>
-            <span class="edu-gpa">GPA: 8.00 / 10</span>
-          </div>
-        </div>
-
-        <div class="edu-item">
-          <div class="edu-degree">Bachelor of Computer Applications</div>
-          <div class="edu-school">GITAM University, Visakhapatnam</div>
-          <div class="edu-meta">
-            <span class="edu-year">Oct 2021 – Apr 2024</span>
-            <span class="edu-gpa">GPA: 7.05 / 10</span>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <span class="col-head">Certifications</span>
-
-        <div class="cert-item">
-          <div class="cert-dot"></div>
-          <div>
-            <div class="cert-name">Data Analytics Essentials</div>
-            <div class="cert-issuer">Cisco Networking Academy</div>
-            <a href="https://www.netacad.com/certificates?issuanceId=0b8fb3af-45c2-459f-a3b4-8e8c8591fadd" target="_blank" rel="noopener" class="cert-link">View Certificate ↗</a>
-          </div>
-        </div>
-
-        <div class="cert-item">
-          <div class="cert-dot"></div>
-          <div>
-            <div class="cert-name">Data Analytics with Generative AI</div>
-            <div class="cert-issuer">Simplilearn</div>
-            <a href="https://simpli-web.app.link/e/hAXjqx5dP2b" target="_blank" rel="noopener" class="cert-link">View Certificate ↗</a>
-          </div>
-        </div>
-
-        <div class="cert-item">
-          <div class="cert-dot"></div>
-          <div>
-            <div class="cert-name">Introduction to Data Analytics</div>
-            <div class="cert-issuer">Simplilearn</div>
-            <a href="https://simpli-web.app.link/e/UwOfDWeIO2b" target="_blank" rel="noopener" class="cert-link">View Certificate ↗</a>
-          </div>
-        </div>
-
-        <div class="cert-item">
-          <div class="cert-dot"></div>
-          <div>
-            <div class="cert-name">Introduction to Microsoft Excel</div>
-            <div class="cert-issuer">Simplilearn</div>
-            <a href="https://simpli-web.app.link/e/lvtxNzKxO2b" target="_blank" rel="noopener" class="cert-link">View Certificate ↗</a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ████ ACHIEVEMENTS ████ -->
-  <section id="achievements" class="section">
-    <span class="eyebrow">Achievements</span>
-    <h2>Badges &amp;<br>Recognition.</h2>
-
-    <div class="achieve-grid fade">
-
-      <div class="achieve-card">
-        <span class="achieve-badge">🏅 Digital Badge</span>
-        <div class="achieve-title">Data Analytics Essentials Badge</div>
-        <div class="achieve-issuer">Cisco Networking Academy</div>
-        <div class="achieve-links">
-          <a href="https://www.credly.com/badges/d2584f35-1d68-4e67-b55b-c3cdbf6e6c6d" target="_blank" rel="noopener" class="achieve-link badge-link">View Badge ↗</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ████ FOOTER ████ -->
-  <footer>
-    <div class="foot-name">Bethineedi Deva Harsha</div>
-    <div class="foot-links">
-      <a href="https://www.linkedin.com/in/bethineedi-deva-harsha-3933aa2a9" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/BeHarsha" target="_blank" rel="noopener">GitHub</a>
-      <a href="mailto:harsha.fieldmaster@gmail.com">Email</a>
-      <a href="#achievements">Achievements</a>
-    </div>
-    <div class="foot-copy">© 2026 · Hyderabad, India</div>
-  </footer>
-
-  <script>
-    // Fade-in on scroll
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
-      { threshold: 0.08 }
-    );
-    document.querySelectorAll('.fade').forEach(el => obs.observe(el));
-  </script>
-
-</body>
-</html>
+# Bethineedi Deva Harsha — Portfolio Website
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Portfolio-Live-success?style=for-the-badge">
+  <img src="https://img.shields.io/badge/GitHub%20Pages-Deployed-black?style=for-the-badge">
+</p>
+
+
+## Live Portfolio Website
+
+ **Visit Here:**  
+ https://beharsha.github.io
+
+
+## About Me
+
+Hi, I'm **Bethineedi Deva Harsha**, a passionate **Data Analyst** skilled in transforming raw data into actionable business insights using:
+
+- SQL
+- Python
+- Power BI
+- Tableau
+- Excel
+- Statistics
+
+
+I specialize in:
+- Exploratory Data Analysis (EDA)
+- Dashboard Development
+- KPI Reporting
+- Business Intelligence
+- Data Cleaning & Transformation
+- Analytical Problem Solving
+
+
+This repository hosts my personal portfolio website showcasing:
+- Projects
+- Technical Skills
+- Education & Certifications
+- Contact Information
+
+
+# Featured Projects
+
+## Banking Insights and Decision Support System
+
+🔗 GitHub Repository:  
+https://github.com/BeHarsha/Banking_Insights_and_Decision_Support_System
+
+### Overview
+A comprehensive banking analytics solution designed to:
+- Monitor loan performance
+- Detect risky lending patterns
+- Analyze customer borrowing behavior
+- Improve operational decision-making
+
+### Key Highlights
+- Analysed **2,940 loan applications**
+- Evaluated **$698.73M** in received payments
+- Identified **13.8% bad loan ratio**
+- Detected **$64.9M non-performing assets**
+- Developed interactive **Power BI dashboards**
+- Automated Month-over-Month KPI tracking
+
+### Technologies Used
+- SQL
+- Power BI
+- Python
+- Data Modelling
+
+
+## Retail Customer Shopping Analysis
+
+🔗 GitHub Repository:  
+https://github.com/BeHarsha/Retail_Customer_Shopping_Analysis
+
+### Overview
+A retail analytics project focused on:
+- Customer behavior analysis
+- Regional sales trends
+- Product performance optimization
+- Business intelligence reporting
+
+### Key Highlights
+- Processed **3,900 retail records**
+- Analysed **14 customer behavior variables**
+- Identified top-performing product categories
+- Generated regional sales insights
+- Built business dashboards for decision-making
+
+### Technologies Used
+- Power BI
+- Python
+- DAX
+- Data Visualization
+
+
+# Technical Skills
+
+## Programming & Query Languages
+- SQL
+- Python
+
+## Data Analytics & BI
+- Power BI
+- Tableau
+- Excel
+- KPI Reporting
+- Dashboard Development
+
+## Databases
+- MySQL
+- PostgreSQL
+
+## Statistics & Analytics
+- Hypothesis Testing
+- Regression Analysis
+- Correlation Analysis
+- Probability
+- Descriptive Statistics
+- Inferential Statistics
+
+## Tools & Platforms
+- GitHub
+- Jupyter Notebook
+- Visual Studio Code
+
+
+# Certifications
+
+- Data Analytics Essentials — Cisco Networking Academy
+- Data Analytics with Generative AI — Simplilearn
+- Introduction to Data Analytics — Simplilearn
+- Introduction to Microsoft Excel — Simplilearn
+
+
+# Achievements
+
+- Data Analytics Essentials Badge — Cisco Networking Academy
+
+
+# Education
+
+## Master of Computer Applications (MCA)
+RG Kedia College of Commerce, Hyderabad  
+Oct 2024 – July 2026  
+GPA: 8.0/10
+
+## Bachelor of Computer Applications (BCA)
+GITAM University, Visakhapatnam  
+Oct 2021 – Apr 2024  
+GPA: 7.05/10
+
+
+# Portfolio Preview
+
+## Home
+![Home](Home.png)
+
+## About
+![About](About.png)
+
+## Skills
+![Skills](Skills.png)
+
+## Projects
+![Projects](Projects.png)
+
+## Credentials
+![Credentials](Credentials.png)
+
+
+# Run Locally
+
+Clone the repository:
+
+```bash
+git clone https://github.com/BeHarsha/beharsha.github.io.git
+```
+
+
+# Portfolio Features
+
+✅ Responsive Design  
+✅ Interactive UI  
+✅ Smooth Navigation  
+✅ Project Showcase  
+✅ Skills Section  
+✅ Contact Section  
+✅ Recruiter Friendly Layout  
+
+
+# Connect With Me
+
+## Portfolio
+https://beharsha.github.io
+
+## LinkedIn
+(https://www.linkedin.com/in/bethineedi-deva-harsha-3933aa2a9)
+
+## GitHub
+https://github.com/BeHarsha
+
+## Email
+harsha.fieldmaster@gmail.com
+
+
+# ⭐ Support
+
+If you like this portfolio repository, consider giving it a ⭐ on GitHub
+
+
+# License
+
+This project is licensed under the MIT License.
+
+
+<p align="center">
+  Built with ❤️ by Bethineedi Deva Harsha
+</p>
