@@ -128,9 +128,15 @@ A retail analytics project focused on:
 
 # Certifications
 
+- Data Analytics Essentials — Cisco Networking Academy
 - Data Analytics with Generative AI — Simplilearn
 - Introduction to Data Analytics — Simplilearn
 - Introduction to Microsoft Excel — Simplilearn
+
+
+# Achievements
+
+- Data Analytics Essentials Badge — Cisco Networking Academy
 
 
 # Education
