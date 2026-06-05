@@ -155,22 +155,22 @@ GPA: 7.05/10
 # Portfolio Preview
 
 ## Home
-![Home](Home.png)
+![Home](assets/Home.png)
 
 ## About
-![About](About.png)
+![About](assets/About.png)
 
 ## Skills
-![Skills](Skills.png)
+![Skills](assets/Skills.png)
 
 ## Projects
-![Projects](Projects.png)
+![Projects](assets/Projects.png)
 
 ## Credentials
-![Credentials](Credentials.png)
+![Credentials](assets/Credentials.png)
 
 ## Achievements
-![Achievements](Achievements.png)
+![Achievements](assets/Achievements.png)
 
 
 # Run Locally
