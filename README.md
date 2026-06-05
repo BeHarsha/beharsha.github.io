@@ -155,7 +155,7 @@ GPA: 7.05/10
 # Portfolio Preview
 
 ## Home
-![Home](assets/Home.png)
+![Home](Home.png)
 
 ## About
 ![About](assets/About.png)
