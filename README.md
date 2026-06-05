@@ -169,6 +169,9 @@ GPA: 7.05/10
 ## Credentials
 ![Credentials](Credentials.png)
 
+## Achievements
+![Achievements](Achievements.png)
+
 
 # Run Locally
 
