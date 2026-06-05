@@ -143,7 +143,7 @@ A retail analytics project focused on:
 
 ## Master of Computer Applications (MCA)
 RG Kedia College of Commerce, Hyderabad  
-Oct 2024 – June 2026  
+Oct 2024 – July 2026  
 GPA: 8.0/10
 
 ## Bachelor of Computer Applications (BCA)
