@@ -129,6 +129,7 @@ A retail analytics project focused on:
 # Certifications
 
 - Data Analytics Essentials — Cisco Networking Academy
+- Artificial Intelligence Fundamentals — IBM SkillsBuild
 - Data Analytics with Generative AI — Simplilearn
 - Introduction to Data Analytics — Simplilearn
 - Introduction to Microsoft Excel — Simplilearn
@@ -137,6 +138,7 @@ A retail analytics project focused on:
 # Achievements
 
 - Data Analytics Essentials Badge — Cisco Networking Academy
+- Artificial Intelligence Fundamentals Badge — IBM SkillsBuild
 
 
 # Education
